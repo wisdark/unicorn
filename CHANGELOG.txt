@@ -1,4 +1,391 @@
 ~~~~~~~~~~~~~~~~
+version 3.7.6
+~~~~~~~~~~~~~~~~
+
+* randomize downgrade code for evasion
+
+~~~~~~~~~~~~~~~~
+3.7.5
+~~~~~~~~~~~~~~~~
+
+* randomize IEX command
+
+~~~~~~~~~~~~~~~~
+version 3.7.4
+~~~~~~~~~~~~~~~~
+
+* add randomization on byte replacing
+
+~~~~~~~~~~~~~~~~
+version 3.7.3
+~~~~~~~~~~~~~~~~
+
+* remove stage encoding and configure meterpreter listener options for better evasion
+
+~~~~~~~~~~~~~~~~
+version 3.7.2
+~~~~~~~~~~~~~~~~
+
+* fix macro injection escaping
+* when using smallest payload, it gets flagged - removing smallest option flag for meterpreter since we don't need it anymore due to code optimization
+
+~~~~~~~~~~~~~~~~
+version 3.7.1
+~~~~~~~~~~~~~~~~
+
+* add Windows 7 support for Unicorn payload
+
+~~~~~~~~~~~~~~~~
+version 3.7
+~~~~~~~~~~~~~~~~
+
+* remove variable name as random string insertion for av avoidance
+* add encoding and automatic stage loading in meterpreter (will flag AV) - looks to be time-gated, just load stdapi once meterpreter loaded
+* added better evasion around sv and gv
+
+~~~~~~~~~~~~~~~~
+version 3.6.11
+~~~~~~~~~~~~~~~~
+
+* more evasion on add-type
+
+~~~~~~~~~~~~~~~~
+version 3.6.10
+~~~~~~~~~~~~~~~~
+
+* shorten up payload and av evasion
+
+~~~~~~~~~~~~~~~~
+version 3.6.9
+~~~~~~~~~~~~~~~~
+
+* move -pass to a different location
+
+~~~~~~~~~~~~~~~~
+3.6.8
+~~~~~~~~~~~~~~~~
+
+* mangle more CreateThread upon execution
+
+~~~~~~~~~~~~~~~~
+version 3.6.7
+~~~~~~~~~~~~~~~~
+
+* mangle word for WIn32Functions
+
+~~~~~~~~~~~~~~~~
+version 3.6.6
+~~~~~~~~~~~~~~~~
+
+* added mangle word for DllImport also shortened codebase
+
+~~~~~~~~~~~~~~~~
+version 3.6.5
+~~~~~~~~~~~~~~~~
+
+* added mangle word for CreateThread
+
+~~~~~~~~~~~~~~~~
+version 3.6.4
+~~~~~~~~~~~~~~~~
+
+* removed line continuation error when using macro injection
+
+~~~~~~~~~~~~~~~~
+version 3.6.3
+~~~~~~~~~~~~~~~~
+
+* converted from VirtualAlloc to calloc and some additional changes
+
+~~~~~~~~~~~~~~~~
+version 3.6.2
+~~~~~~~~~~~~~~~~
+
+* mangled VirtualAlloc for new signature updates
+
+~~~~~~~~~~~~~~~~
+version 3.6.1
+~~~~~~~~~~~~~~~~
+
+* broke out function for parsing -f c in msfvenom so it can be used in other locations
+* shrunk payload size while enabling shikata_ga_nai for shellcode generation with unicorn by randomized special characters - shrinks payload drastically
+* added better handling for custom shellcode for metasploit
+* added ability to use custom shellcode to the custom shellcode generation for hta and macro - python unicorn.py <path_to_shellcode.txt> shellcode hta / macro / etc.
+
+~~~~~~~~~~~~~~~~
+version 3.6
+~~~~~~~~~~~~~~~~
+
+* turn AMSI bypass to OFF by default, not needed unless you want to disable/patch in memory
+* removed liquify_bytes function for more preferred and smaller method which does replacement methods to circumvent AMSI signature providers
+
+~~~~~~~~~~~~~~~~
+version 3.5.3
+~~~~~~~~~~~~~~~~
+
+* added wording and help menu for amsi bypass
+* added command line option for download/exec with macro
+
+~~~~~~~~~~~~~~~~
+version 3.5.2
+~~~~~~~~~~~~~~~~
+
+* fix a bug that would cause download/exec not to work when using macro
+
+~~~~~~~~~~~~~~~~
+version 3.5.1
+~~~~~~~~~~~~~~~~
+
+* more evasion *yawn*
+* added amsi bypass to get around completely, adds amsi flag to command line. If you are using this then the 2191 cmd prompt limit will be larger
+* added a PRINT_DECODED to unicorn.py, turn this to ON if you want to see the decoded command in its full extent
+
+~~~~~~~~~~~~~~~~
+version 3.5
+~~~~~~~~~~~~~~~~
+
+* add randomized URILength - YOLO Justin Elze
+* removed sleep function for preferred -NoExit
+* add more evasion
+
+~~~~~~~~~~~~~~~~
+version 3.4.5
+~~~~~~~~~~~~~~~~
+
+* move to while($true) instead of for loop
+* fix byte splitting for match on regular expression
+* slim down code (woot)
+* add better handling of liquify bytes
+
+~~~~~~~~~~~~~~~~
+version 3.4.4
+~~~~~~~~~~~~~~~~
+
+* remove byte designation - not needed already in byte format
+
+~~~~~~~~~~~~~~~~
+version 3.4.3
+~~~~~~~~~~~~~~~~
+
+* fix when liquify bytes called would not reroll variable names which could cause conflicts
+
+~~~~~~~~~~~~~~~~
+version 3.4.2
+~~~~~~~~~~~~~~~~
+
+* remove -e''c as this breaks windows 7 compatibility, now works on win7
+
+~~~~~~~~~~~~~~~~
+version 3.4.1
+~~~~~~~~~~~~~~~~
+
+* remove byte specification, not needed and shortens code base
+* fix cobalt strike hta and macro generation wording
+
+~~~~~~~~~~~~~~~~
+version 3.4
+~~~~~~~~~~~~~~~~
+
+* fix opening payload with file error by using open instead (thanks jmhickman for PR)
+* fix macro injection technique that was not spawning a child process window which would cause powershell to fail
+* fix 32 bit compatibility
+* add better randomization variable name check conflicts (.lower())
+* fix hta attack vector
+* add a payload check for custom shellcode and cobalt strike to ensure its formatted properly
+
+~~~~~~~~~~~~~~~~
+version 3.3.2
+~~~~~~~~~~~~~~~~
+
+* add double () for defender signature update
+
+~~~~~~~~~~~~~~~~
+version 3.3.1
+~~~~~~~~~~~~~~~~
+
+* fix bugs where vars would be overwritten
+* readd exception handling
+
+~~~~~~~~~~~~~~~~
+version 3.3
+~~~~~~~~~~~~~~~~
+
+* added back 32 bit compatibility
+* added better evasion through kernel32.dll
+* shaved shellcode size
+* move back to IntPtr, system.int32 no longer needed
+* add a variable check to ensure theres no variable name conflicts when using the powershell code
+
+~~~~~~~~~~~~~~~~
+version 3.2.10
+~~~~~~~~~~~~~~~~
+
+* use System.Int32 instead of int
+
+~~~~~~~~~~~~~~~~
+version 3.2.9
+~~~~~~~~~~~~~~~~
+
+* bugfix causing powershell to terminate
+
+~~~~~~~~~~~~~~~~
+version 3.2.8
+~~~~~~~~~~~~~~~~
+
+* change intptr to int
+
+~~~~~~~~~~~~~~~~
+version 3.2.7
+~~~~~~~~~~~~~~~~
+
+* randomize service name (lol)
+
+~~~~~~~~~~~~~~~~
+version 3.2.6
+~~~~~~~~~~~~~~~~
+
+* added more byte splitting for better evasion
+* rewrote components for macro injection to circumvent av
+* rewrote components for HTA injection to circumvent av
+
+~~~~~~~~~~~~~~~~
+version 3.2.5
+~~~~~~~~~~~~~~~~
+
+* add byte splitting based on defender sigs
+
+~~~~~~~~~~~~~~~~
+version 3.2.4
+~~~~~~~~~~~~~~~~
+
+* added randomized integer lengths for dynamic byte ranges
+
+~~~~~~~~~~~~~~~~
+version 3.2.3
+~~~~~~~~~~~~~~~~
+
+* create longer byte arrays for defender rule bypass
+
+~~~~~~~~~~~~~~~~
+version 3.2.2
+~~~~~~~~~~~~~~~~
+
+* add python 3 compatibility
+* remove filewrite variable and move to function write_file for SettingContent-ms
+
+~~~~~~~~~~~~~~~~
+version 3.2.1
+~~~~~~~~~~~~~~~~
+
+* update blog post and update readme
+* update unicorn metasploit meterpreter payload to remove a CLD from beginning of shellcode which was being snagged by defender
+
+~~~~~~~~~~~~~~~~
+version 3.2
+~~~~~~~~~~~~~~~~
+
+* added new SettingContent-ms from enigma0x3 to Unicorn supports cobalt strike, metasploit, and custom shellcode
+* remove %windir%, getting flagged by AV
+
+~~~~~~~~~~~~~~~~
+version 3.1
+~~~~~~~~~~~~~~~~
+
+* added secondary parse for older versions of cobalt strike
+* added better error handling around list index out of range
+* modified lower stack size due to powershell crashing sometimes, seems to be more stable now
+
+~~~~~~~~~~~~~~~~
+version 3.0
+~~~~~~~~~~~~~~~~
+
+* added ability to import cobalt strike C# stager and use that as a unicorn based attack
+* added ability to import any shellcode directly into unicorn
+* remove cmd.exe depend on WSCRIPT.Shell - not needed and increases cmd line length limit
+* added ability to use custom shellcode with cobalt strike and shellcode methods for hta
+* added ability to use custom shellcode with cobalt strike and shellcode methods for macro
+* fixed line continuation error for long payloads when using excel (can't have long strings with & plus 25)
+* add hiding of powershell name in hta file
+
+~~~~~~~~~~~~~~~~
+version 2.14
+~~~~~~~~~~~~~~~~
+
+* fix replace for /C that broke syntax for macros
+
+~~~~~~~~~~~~~~~~
+version 2.13
+~~~~~~~~~~~~~~~~
+
+* added switches on command lines for evasion
+
+~~~~~~~~~~~~~~~~
+version 2.12
+~~~~~~~~~~~~~~~~
+
+* added better handling for stack size detection on signatures - should no longer get flagged
+
+~~~~~~~~~~~~~~~~
+version 2.11
+~~~~~~~~~~~~~~~~
+
+* reduce filesize by removing shikata from encoding on payload generation
+* add lenght limit size description on error on size
+
+~~~~~~~~~~~~~~~~
+version 2.10
+~~~~~~~~~~~~~~~~
+
+* added IEX and formula evasion as DDE methods and split out attack vector into 3 different components
+* rewrote the download/exec payload so that it is custom shellcode that is manually patched with URL instead of metasploit one
+* numerous other enhancements and fixes
+
+~~~~~~~~~~~~~~~~
+version 2.9.3
+~~~~~~~~~~~~~~~~
+
+* add better obfsucation on dde
+
+~~~~~~~~~~~~~~~~
+version 2.9.2
+~~~~~~~~~~~~~~~~
+
+* fix compatibility with windows 7 - for some reason -e''c in Windows 7 breaks Unicorn whereas works fine within Windows 10
+
+~~~~~~~~~~~~~~~~
+version 2.9.1
+~~~~~~~~~~~~~~~~
+
+* fix typo in powershell_command
+* added better obfsucation of path and code (thanks Will)
+
+~~~~~~~~~~~~~~~~
+version 2.9
+~~~~~~~~~~~~~~~~
+
+* added a sys.exit() on length amount
+* added new dde code exec through unicorn from sensepost
+* fixed some wording in help menu
+* general code cleanup
+* slimmed down command line some more with seperator reduction and variable name size length
+
+~~~~~~~~~~~~~~~~
+version 2.8.2
+~~~~~~~~~~~~~~~~
+
+* added better handling of randomized variable names
+* removed an extra semicolon
+* fixed typo
+* added count length for payload to ensure payload doesn't increase past max command line length of 8191
+* fixed minor casing on Start-Sleep
+
+~~~~~~~~~~~~~~~~
+version 2.8.1
+~~~~~~~~~~~~~~~~
+
+* remove static variables - flagged by A/V
+
+~~~~~~~~~~~~~~~~
 version 2.8
 ~~~~~~~~~~~~~~~~
 
