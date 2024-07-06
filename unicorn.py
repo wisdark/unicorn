@@ -1228,13 +1228,13 @@ try:
         help_options = ["-h","--help"]
 
         if len(sys.argv) > 2:
-            if sys.argv[2] in payload_options:
+            if sys.argv[2] in payload_options and sys.argv[1] in help_options:
                 # Show help for specific payload options
                 if sys.argv[2] == "powershell":
                     ps_help()
                     gen_usage()
                     sys.exit()
-                elif sys.argv[2] == "macro":
+                elif sys.argv[2] == "macro" and re.search('\.ps1$', sys.argv[1]) is None: # "unicorn.py PATH.ps1 macro" not working, there's a fix
                     macro_help()
                     gen_usage()
                     sys.exit()
